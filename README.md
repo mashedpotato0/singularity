@@ -33,6 +33,7 @@ A dynamic, OLED-black themed desktop environment powered by Hyprland and Quicksh
 - **Idle Daemon**: Hypridle with media playback suppression and live timeout adjustment
 - **VPN Manager**: Integrated OpenVPN interactive manager and top-bar applet
 - **Theme Generator**: Material You color extraction script (`color.py`) dynamically deriving palettes from active wallpapers
+- **Default Wallpaper**: [Black Clover: The Reincarnation Arc by ury-deviantart](https://www.deviantart.com/ury-deviantart/art/Black-Clover-The-Reincarnation-Arc-821199253)
 
 ---
 
@@ -51,6 +52,7 @@ A dynamic, OLED-black themed desktop environment powered by Hyprland and Quicksh
 │   ├── btop/            # btop system monitor theme
 │   ├── fish/            # fish shell configuration
 │   └── fontconfig/      # font rendering settings
+├── wallpapers/          # default wallpaper collection
 ├── install.sh           # automated installer script
 └── README.md            # documentation and guide
 ```
@@ -131,6 +133,13 @@ A dynamic, OLED-black themed desktop environment powered by Hyprland and Quicksh
 
 ---
 
+## Wallpaper Source
+
+- **Default Wallpaper**: [Black Clover: The Reincarnation Arc by ury-deviantart](https://www.deviantart.com/ury-deviantart/art/Black-Clover-The-Reincarnation-Arc-821199253)
+- Located in `wallpapers/` within this repository and automatically deployed to `~/wallpapers/` by the installer.
+
+---
+
 ## VPN Setup Guide
 
 The desktop environment includes a built-in OpenVPN manager and top-bar indicator:
@@ -171,6 +180,7 @@ The installer will:
 3. Install `quickshell-git` via the AUR helper.
 4. Install required Python libraries (`materialyoucolor`, `pillow`).
 5. Deploy all configuration directories to `~/.config/`.
+6. Deploy the default wallpaper to `~/wallpapers/` and initialize the dynamic theme.
 
 ---
 
@@ -184,7 +194,7 @@ The installer will:
    ```
 
 2. **Add Wallpapers**:
-   Place your wallpapers in `~/wallpapers/` or `~/wallpapers/desktop/`.
+   Place additional wallpapers in `~/wallpapers/` or `~/wallpapers/desktop/`.
 
 3. **Generate Initial Theme**:
    Press `Alt + W` in Hyprland or run:

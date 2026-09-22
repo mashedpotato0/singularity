@@ -4,7 +4,9 @@ set -e
 # script directory and paths
 SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_SRC="$SRC_DIR/.config"
+WALLPAPER_SRC="$SRC_DIR/wallpapers"
 TARGET_DIR="$HOME/.config"
+TARGET_WALLPAPER_DIR="$HOME/wallpapers"
 
 echo "=== Hyprland & Quickshell Desktop Environment Installer ==="
 
@@ -117,9 +119,22 @@ for item in "$CONFIG_SRC"/*; do
     fi
 done
 
+# deploy default wallpapers
+if [ -d "$WALLPAPER_SRC" ]; then
+    echo "deploying default wallpapers to $TARGET_WALLPAPER_DIR..."
+    mkdir -p "$TARGET_WALLPAPER_DIR"
+    cp -rn "$WALLPAPER_SRC"/* "$TARGET_WALLPAPER_DIR/" 2>/dev/null || cp -r "$WALLPAPER_SRC"/* "$TARGET_WALLPAPER_DIR/" || true
+fi
+
 # ensure scripts are executable
 if [ -d "$TARGET_DIR/hypr/scripts" ]; then
     chmod +x "$TARGET_DIR/hypr/scripts"/*.sh "$TARGET_DIR/hypr/scripts"/*.py 2>/dev/null || true
+fi
+
+# initialize wallpaper and theme
+if [ -f "$TARGET_DIR/hypr/scripts/wall.sh" ]; then
+    echo "initializing default wallpaper and dynamic theme..."
+    bash "$TARGET_DIR/hypr/scripts/wall.sh" --startup 2>/dev/null || true
 fi
 
 echo "=== installation completed successfully ==="
