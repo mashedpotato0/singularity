@@ -76,6 +76,8 @@ PACMAN_PKGS=(
     adwaita-icon-theme
     breeze-icons
     thunar
+    openvpn
+    dialog
     xdg-desktop-portal-hyprland
     xdg-desktop-portal-gtk
 )
