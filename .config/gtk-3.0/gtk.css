@@ -1,29 +1,29 @@
 /* Generated GTK Material Theme */
-@define-color theme_bg_color #090c08;
-@define-color theme_fg_color #d7f4c4;
-@define-color theme_base_color #030402;
-@define-color theme_text_color #d7f4c4;
-@define-color theme_selected_bg_color #b8d4a7;
-@define-color theme_selected_fg_color #152b0c;
-@define-color theme_view_hover_decoration_color #181a15;
-@define-color theme_view_active_decoration_color #1e201b;
-@define-color borders #364d2a;
-@define-color unfocused_borders #364d2a;
-@define-color headerbar_bg_color #090c08;
-@define-color headerbar_fg_color #d7f4c4;
-@define-color headerbar_border_color #364d2a;
-@define-color popover_bg_color #11140f;
-@define-color popover_fg_color #d7f4c4;
-@define-color view_bg_color #030402;
-@define-color view_fg_color #d7f4c4;
-@define-color card_bg_color #11140f;
-@define-color card_fg_color #d7f4c4;
-@define-color sidebar_bg_color #030402;
-@define-color sidebar_fg_color #d7f4c4;
-@define-color window_bg_color #090c08;
-@define-color window_fg_color #d7f4c4;
+@define-color theme_bg_color #140808;
+@define-color theme_fg_color #fff8f7;
+@define-color theme_base_color #0a0202;
+@define-color theme_text_color #fff8f7;
+@define-color theme_selected_bg_color #ffaaad;
+@define-color theme_selected_fg_color #3d040d;
+@define-color theme_view_hover_decoration_color #2b1919;
+@define-color theme_view_active_decoration_color #382223;
+@define-color borders #5a2f31;
+@define-color unfocused_borders #5a2f31;
+@define-color headerbar_bg_color #140808;
+@define-color headerbar_fg_color #fff8f7;
+@define-color headerbar_border_color #5a2f31;
+@define-color popover_bg_color #201212;
+@define-color popover_fg_color #fff8f7;
+@define-color view_bg_color #0a0202;
+@define-color view_fg_color #fff8f7;
+@define-color card_bg_color #201212;
+@define-color card_fg_color #fff8f7;
+@define-color sidebar_bg_color #201212;
+@define-color sidebar_fg_color #fff8f7;
+@define-color window_bg_color #140808;
+@define-color window_fg_color #fff8f7;
 
-window, .background {
+window, .background, window.thunar, .thunar {
     background-color: @theme_bg_color;
     color: @theme_fg_color;
 }
@@ -33,13 +33,49 @@ view, textview, treeview, iconview, .view {
     color: @theme_text_color;
 }
 
-headerbar, .titlebar {
+headerbar, .titlebar, headerbar.titlebar, toolbar, .toolbar, menubar, .menubar {
     background-color: @headerbar_bg_color;
     color: @headerbar_fg_color;
     border-color: @headerbar_border_color;
 }
 
-.sidebar, .source-list, placessidebar {
+menubar > menuitem, .menubar > menuitem {
+    color: @headerbar_fg_color;
+}
+
+.sidebar, .source-list, placessidebar, placessidebar list, placessidebar .view, .thunar .standard-view .view {
     background-color: @sidebar_bg_color;
     color: @sidebar_fg_color;
+}
+
+.path-bar-box, .location-bar, .path-bar, pathbar {
+    background-color: @headerbar_bg_color;
+    color: @headerbar_fg_color;
+}
+
+pathbar button, .path-bar button {
+    background-color: @card_bg_color;
+    color: @theme_fg_color;
+    border-color: @borders;
+}
+
+entry, .entry {
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+    border-color: @borders;
+}
+
+button, .button {
+    background-color: @card_bg_color;
+    color: @theme_fg_color;
+    border-color: @borders;
+}
+
+button:hover, .button:hover {
+    background-color: @theme_view_hover_decoration_color;
+}
+
+notebook, notebook tab, notebook > header {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
 }

@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-# Move to script directory
-cd "$(dirname "$0")" || exit
-SCRIPT_DIR=$(pwd)
+# move to script directory
+cd "$(dirname "$0")" || exit 1
 
-if [ ! -f ".venv/bin/activate" ]; then
-    echo "Error: Virtual environment not found in $SCRIPT_DIR"
-    exit 1
+if [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate
 fi
 
-source .venv/bin/activate
-python color.py "$@"
+if command -v python3 >/dev/null 2>&1; then
+    python3 color.py "$@"
+else
+    python color.py "$@"
+fi

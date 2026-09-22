@@ -28,7 +28,6 @@ end)
 -- environment variables
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("GTK_THEME", "Adwaita:dark")
 hl.env("XDG_DATA_DIRS", os.getenv("HOME") .. "/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share")
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 hl.env("GDK_BACKEND", "wayland,x11,*")

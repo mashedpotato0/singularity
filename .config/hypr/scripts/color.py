@@ -165,51 +165,58 @@ def generate_palette(image_path, is_dark=True):
 
         if not p_primary: return
 
-        # Color harmony accents derived from wallpaper
+        # color harmony accents derived from wallpaper with high chroma
         base_hue = hct.hue
-        base_chroma = max(hct.chroma, 48.0)
+        base_chroma = max(hct.chroma, 60.0)
 
-        acc_cyan = Hct.from_hct((base_hue + 180) % 360, max(base_chroma, 50.0), 82 if is_dark else 40).to_int()
-        acc_sapphire = Hct.from_hct((base_hue + 215) % 360, max(base_chroma, 50.0), 82 if is_dark else 40).to_int()
-        acc_mauve = Hct.from_hct((base_hue + 290) % 360, max(base_chroma, 50.0), 82 if is_dark else 40).to_int()
-        acc_peach = Hct.from_hct((base_hue + 35) % 360, max(base_chroma, 50.0), 82 if is_dark else 40).to_int()
-        acc_yellow = Hct.from_hct((base_hue + 75) % 360, max(base_chroma, 50.0), 84 if is_dark else 42).to_int()
-        acc_green = Hct.from_hct((base_hue + 130) % 360, max(base_chroma, 50.0), 82 if is_dark else 40).to_int()
-        acc_red = Hct.from_hct(20.0, max(base_chroma, 52.0), 82 if is_dark else 40).to_int()
+        acc_cyan = Hct.from_hct((base_hue + 180) % 360, max(base_chroma * 1.3, 75.0), 80 if is_dark else 32).to_int()
+        acc_sapphire = Hct.from_hct((base_hue + 215) % 360, max(base_chroma * 1.3, 75.0), 80 if is_dark else 32).to_int()
+        acc_mauve = Hct.from_hct((base_hue + 290) % 360, max(base_chroma * 1.3, 75.0), 80 if is_dark else 34).to_int()
+        acc_peach = Hct.from_hct((base_hue + 35) % 360, max(base_chroma * 1.3, 75.0), 82 if is_dark else 36).to_int()
+        acc_yellow = Hct.from_hct((base_hue + 75) % 360, max(base_chroma * 1.3, 75.0), 84 if is_dark else 34).to_int()
+        acc_green = Hct.from_hct((base_hue + 130) % 360, max(base_chroma * 1.3, 75.0), 80 if is_dark else 30).to_int()
+        acc_red = Hct.from_hct(20.0, 85.0, 80 if is_dark else 34).to_int()
+
+        prim_dark = Hct.from_hct(base_hue, max(base_chroma * 1.25, 75.0), 78).to_int()
+        prim_light = Hct.from_hct(base_hue, max(base_chroma * 1.25, 80.0), 36).to_int()
+        sec_dark = Hct.from_hct((base_hue + 30) % 360, max(base_chroma * 1.15, 70.0), 78).to_int()
+        sec_light = Hct.from_hct((base_hue + 30) % 360, max(base_chroma * 1.15, 75.0), 36).to_int()
+        tert_dark = Hct.from_hct((base_hue + 60) % 360, max(base_chroma * 1.15, 70.0), 78).to_int()
+        tert_light = Hct.from_hct((base_hue + 60) % 360, max(base_chroma * 1.15, 75.0), 36).to_int()
 
         if is_dark:
             palette = {
                 "source_color": source_color_int,
                 "is_dark": True,
-                "primary": p_primary.tone(82),
-                "on_primary": p_primary.tone(15),
-                "primary_container": p_primary.tone(30),
-                "on_primary_container": p_primary.tone(90),
-                "inverse_primary": p_primary.tone(40),
-                "primary_fixed": p_primary.tone(90),
-                "primary_fixed_dim": p_primary.tone(82),
-                "on_primary_fixed": p_primary.tone(10),
-                "on_primary_fixed_variant": p_primary.tone(30),
-                "secondary": p_secondary.tone(82),
-                "on_secondary": p_secondary.tone(15),
-                "secondary_container": p_secondary.tone(30),
-                "on_secondary_container": p_secondary.tone(90),
-                "secondary_fixed": p_secondary.tone(90),
-                "secondary_fixed_dim": p_secondary.tone(82),
-                "on_secondary_fixed": p_secondary.tone(10),
-                "on_secondary_fixed_variant": p_secondary.tone(30),
-                "tertiary": p_tertiary.tone(82),
-                "on_tertiary": p_tertiary.tone(15),
-                "tertiary_container": p_tertiary.tone(30),
-                "on_tertiary_container": p_tertiary.tone(90),
-                "tertiary_fixed": p_tertiary.tone(90),
-                "tertiary_fixed_dim": p_tertiary.tone(82),
-                "on_tertiary_fixed": p_tertiary.tone(10),
-                "on_tertiary_fixed_variant": p_tertiary.tone(30),
-                "error": p_error.tone(82),
-                "on_error": p_error.tone(15),
-                "error_container": p_error.tone(30),
-                "on_error_container": p_error.tone(90),
+                "primary": prim_dark,
+                "on_primary": Hct.from_hct(base_hue, 40.0, 10).to_int(),
+                "primary_container": Hct.from_hct(base_hue, max(base_chroma * 0.9, 50.0), 28).to_int(),
+                "on_primary_container": Hct.from_hct(base_hue, 30.0, 92).to_int(),
+                "inverse_primary": prim_light,
+                "primary_fixed": Hct.from_hct(base_hue, max(base_chroma * 1.1, 65.0), 90).to_int(),
+                "primary_fixed_dim": prim_dark,
+                "on_primary_fixed": Hct.from_hct(base_hue, 50.0, 10).to_int(),
+                "on_primary_fixed_variant": Hct.from_hct(base_hue, 40.0, 30).to_int(),
+                "secondary": sec_dark,
+                "on_secondary": Hct.from_hct(base_hue, 40.0, 10).to_int(),
+                "secondary_container": Hct.from_hct((base_hue + 30) % 360, 45.0, 28).to_int(),
+                "on_secondary_container": Hct.from_hct((base_hue + 30) % 360, 30.0, 92).to_int(),
+                "secondary_fixed": Hct.from_hct((base_hue + 30) % 360, 65.0, 90).to_int(),
+                "secondary_fixed_dim": sec_dark,
+                "on_secondary_fixed": Hct.from_hct((base_hue + 30) % 360, 50.0, 10).to_int(),
+                "on_secondary_fixed_variant": Hct.from_hct((base_hue + 30) % 360, 40.0, 30).to_int(),
+                "tertiary": tert_dark,
+                "on_tertiary": Hct.from_hct(base_hue, 40.0, 10).to_int(),
+                "tertiary_container": Hct.from_hct((base_hue + 60) % 360, 45.0, 28).to_int(),
+                "on_tertiary_container": Hct.from_hct((base_hue + 60) % 360, 30.0, 92).to_int(),
+                "tertiary_fixed": Hct.from_hct((base_hue + 60) % 360, 65.0, 90).to_int(),
+                "tertiary_fixed_dim": tert_dark,
+                "on_tertiary_fixed": Hct.from_hct((base_hue + 60) % 360, 50.0, 10).to_int(),
+                "on_tertiary_fixed_variant": Hct.from_hct((base_hue + 60) % 360, 40.0, 30).to_int(),
+                "error": Hct.from_hct(20.0, 85.0, 80).to_int(),
+                "on_error": Hct.from_hct(20.0, 60.0, 10).to_int(),
+                "error_container": Hct.from_hct(20.0, 70.0, 30).to_int(),
+                "on_error_container": Hct.from_hct(20.0, 30.0, 92).to_int(),
                 "accent_cyan": acc_cyan,
                 "accent_sapphire": acc_sapphire,
                 "accent_mauve": acc_mauve,
@@ -217,63 +224,63 @@ def generate_palette(image_path, is_dark=True):
                 "accent_yellow": acc_yellow,
                 "accent_green": acc_green,
                 "accent_red": acc_red,
-                "background": p_neutral.tone(2),
-                "on_background": p_primary.tone(93),
-                "surface": p_neutral.tone(3),
-                "on_surface": p_primary.tone(93),
-                "text_subtle": p_secondary.tone(84),
-                "text_muted": p_tertiary.tone(70),
-                "surface_dim": p_neutral.tone(2),
-                "surface_bright": p_neutral.tone(15),
-                "surface_container_lowest": p_neutral.tone(1),
-                "surface_container_low": p_neutral.tone(4),
-                "surface_container": p_neutral.tone(6),
-                "surface_container_high": p_neutral.tone(9),
-                "surface_container_highest": p_neutral.tone(12),
-                "inverse_surface": p_primary.tone(82),
-                "inverse_on_surface": p_neutral.tone(10),
-                "surface_variant": p_primary.tone(15),
-                "on_surface_variant": p_secondary.tone(70),
-                "outline": p_tertiary.tone(60),
-                "outline_variant": p_primary.tone(30),
+                "background": Hct.from_hct(base_hue, 8.0, 2).to_int(),
+                "on_background": Hct.from_hct(base_hue, 6.0, 98).to_int(),
+                "surface": Hct.from_hct(base_hue, 10.0, 3).to_int(),
+                "on_surface": Hct.from_hct(base_hue, 6.0, 98).to_int(),
+                "text_subtle": Hct.from_hct(base_hue, 15.0, 88).to_int(),
+                "text_muted": Hct.from_hct(base_hue, 18.0, 75).to_int(),
+                "surface_dim": Hct.from_hct(base_hue, 10.0, 2).to_int(),
+                "surface_bright": Hct.from_hct(base_hue, 12.0, 16).to_int(),
+                "surface_container_lowest": Hct.from_hct(base_hue, 10.0, 1).to_int(),
+                "surface_container_low": Hct.from_hct(base_hue, 10.0, 4).to_int(),
+                "surface_container": Hct.from_hct(base_hue, 10.0, 7).to_int(),
+                "surface_container_high": Hct.from_hct(base_hue, 12.0, 11).to_int(),
+                "surface_container_highest": Hct.from_hct(base_hue, 14.0, 16).to_int(),
+                "inverse_surface": Hct.from_hct(base_hue, 8.0, 92).to_int(),
+                "inverse_on_surface": Hct.from_hct(base_hue, 10.0, 10).to_int(),
+                "surface_variant": Hct.from_hct(base_hue, 25.0, 15).to_int(),
+                "on_surface_variant": Hct.from_hct(base_hue, 20.0, 75).to_int(),
+                "outline": Hct.from_hct(base_hue, 30.0, 50).to_int(),
+                "outline_variant": Hct.from_hct(base_hue, 25.0, 25).to_int(),
                 "shadow": p_neutral.tone(0),
                 "scrim": p_neutral.tone(0),
-                "surface_tint": p_primary.tone(82),
-                "notif": p_neutral.tone(3),
+                "surface_tint": prim_dark,
+                "notif": Hct.from_hct(base_hue, 10.0, 4).to_int(),
             }
         else:
             palette = {
                 "source_color": source_color_int,
                 "is_dark": False,
-                "primary": p_primary.tone(40),
-                "on_primary": p_primary.tone(100),
-                "primary_container": p_primary.tone(90),
-                "on_primary_container": p_primary.tone(10),
-                "inverse_primary": p_primary.tone(80),
-                "primary_fixed": p_primary.tone(90),
-                "primary_fixed_dim": p_primary.tone(80),
-                "on_primary_fixed": p_primary.tone(10),
-                "on_primary_fixed_variant": p_primary.tone(30),
-                "secondary": p_secondary.tone(40),
-                "on_secondary": p_secondary.tone(100),
-                "secondary_container": p_secondary.tone(90),
-                "on_secondary_container": p_secondary.tone(10),
-                "secondary_fixed": p_secondary.tone(90),
-                "secondary_fixed_dim": p_secondary.tone(80),
-                "on_secondary_fixed": p_secondary.tone(10),
-                "on_secondary_fixed_variant": p_secondary.tone(30),
-                "tertiary": p_tertiary.tone(40),
-                "on_tertiary": p_tertiary.tone(100),
-                "tertiary_container": p_tertiary.tone(90),
-                "on_tertiary_container": p_tertiary.tone(10),
-                "tertiary_fixed": p_tertiary.tone(90),
-                "tertiary_fixed_dim": p_tertiary.tone(80),
-                "on_tertiary_fixed": p_tertiary.tone(10),
-                "on_tertiary_fixed_variant": p_tertiary.tone(30),
-                "error": p_error.tone(40),
-                "on_error": p_error.tone(100),
-                "error_container": p_error.tone(90),
-                "on_error_container": p_error.tone(10),
+                "primary": prim_light,
+                "on_primary": Hct.from_hct(base_hue, 10.0, 100).to_int(),
+                "primary_container": Hct.from_hct(base_hue, max(base_chroma * 0.9, 45.0), 92).to_int(),
+                "on_primary_container": Hct.from_hct(base_hue, 60.0, 8).to_int(),
+                "inverse_primary": prim_dark,
+                "primary_fixed": Hct.from_hct(base_hue, max(base_chroma * 1.1, 65.0), 90).to_int(),
+                "primary_fixed_dim": prim_light,
+                "on_primary_fixed": Hct.from_hct(base_hue, 50.0, 8).to_int(),
+                "on_primary_fixed_variant": Hct.from_hct(base_hue, 40.0, 25).to_int(),
+                "secondary": sec_light,
+                "on_secondary": Hct.from_hct((base_hue + 30) % 360, 10.0, 100).to_int(),
+                "secondary_container": Hct.from_hct((base_hue + 30) % 360, 45.0, 92).to_int(),
+                "on_secondary_container": Hct.from_hct((base_hue + 30) % 360, 60.0, 8).to_int(),
+                "secondary_fixed": Hct.from_hct((base_hue + 30) % 360, 65.0, 90).to_int(),
+                "secondary_fixed_dim": sec_light,
+                "on_secondary_fixed": Hct.from_hct((base_hue + 30) % 360, 50.0, 8).to_int(),
+                "on_secondary_fixed_variant": Hct.from_hct((base_hue + 30) % 360, 40.0, 25).to_int(),
+                "tertiary": tert_light,
+                "on_tertiary": Hct.from_hct((base_hue + 60) % 360, 10.0, 100).to_int(),
+                "tertiary_container": Hct.from_hct((base_hue + 60) % 360, 45.0, 92).to_int(),
+                "on_tertiary_container": Hct.from_hct((base_hue + 60) % 360, 60.0, 8).to_int(),
+                "tertiary_fixed": Hct.from_hct((base_hue + 60) % 360, 65.0, 90).to_int(),
+                "tertiary_fixed_dim": tert_light,
+                "on_tertiary_fixed": Hct.from_hct((base_hue + 60) % 360, 50.0, 8).to_int(),
+                "on_tertiary_fixed_variant": Hct.from_hct((base_hue + 60) % 360, 40.0, 25).to_int(),
+                "error": Hct.from_hct(20.0, 90.0, 36).to_int(),
+                "on_error": Hct.from_hct(20.0, 10.0, 100).to_int(),
+                "error_container": Hct.from_hct(20.0, 60.0, 92).to_int(),
+                "on_error_container": Hct.from_hct(20.0, 70.0, 8).to_int(),
                 "accent_cyan": acc_cyan,
                 "accent_sapphire": acc_sapphire,
                 "accent_mauve": acc_mauve,
@@ -281,38 +288,29 @@ def generate_palette(image_path, is_dark=True):
                 "accent_yellow": acc_yellow,
                 "accent_green": acc_green,
                 "accent_red": acc_red,
-                "background": p_neutral.tone(98),
-                "on_background": p_neutral.tone(10),
-                "surface": p_neutral.tone(98),
-                "on_surface": p_neutral.tone(10),
-                "text_subtle": p_secondary.tone(30),
-                "text_muted": p_tertiary.tone(45),
-                "on_tertiary_fixed_variant": p_tertiary.tone(30),
-                "error": p_error.tone(40),
-                "on_error": p_error.tone(100),
-                "error_container": p_error.tone(90),
-                "on_error_container": p_error.tone(10),
-                "background": p_neutral.tone(98),
-                "on_background": p_neutral.tone(10),
-                "surface": p_neutral.tone(98),
-                "on_surface": p_neutral.tone(10),
-                "surface_dim": p_neutral.tone(87),
-                "surface_bright": p_neutral.tone(98),
-                "surface_container_lowest": p_neutral.tone(100),
-                "surface_container_low": p_neutral.tone(96),
-                "surface_container": p_neutral.tone(94),
-                "surface_container_high": p_neutral.tone(92),
-                "surface_container_highest": p_neutral.tone(90),
-                "inverse_surface": p_neutral.tone(20),
-                "inverse_on_surface": p_neutral.tone(95),
-                "surface_variant": p_neutral_variant.tone(90),
-                "on_surface_variant": p_neutral_variant.tone(30),
-                "outline": p_neutral_variant.tone(50),
-                "outline_variant": p_neutral_variant.tone(80),
+                "background": Hct.from_hct(base_hue, 6.0, 98).to_int(),
+                "on_background": Hct.from_hct(base_hue, 20.0, 2).to_int(),
+                "surface": Hct.from_hct(base_hue, 8.0, 98).to_int(),
+                "on_surface": Hct.from_hct(base_hue, 20.0, 2).to_int(),
+                "text_subtle": Hct.from_hct(base_hue, 25.0, 14).to_int(),
+                "text_muted": Hct.from_hct(base_hue, 25.0, 28).to_int(),
+                "surface_dim": Hct.from_hct(base_hue, 8.0, 88).to_int(),
+                "surface_bright": Hct.from_hct(base_hue, 8.0, 99).to_int(),
+                "surface_container_lowest": Hct.from_hct(base_hue, 6.0, 100).to_int(),
+                "surface_container_low": Hct.from_hct(base_hue, 8.0, 96).to_int(),
+                "surface_container": Hct.from_hct(base_hue, 8.0, 93).to_int(),
+                "surface_container_high": Hct.from_hct(base_hue, 10.0, 89).to_int(),
+                "surface_container_highest": Hct.from_hct(base_hue, 12.0, 84).to_int(),
+                "inverse_surface": Hct.from_hct(base_hue, 10.0, 15).to_int(),
+                "inverse_on_surface": Hct.from_hct(base_hue, 6.0, 96).to_int(),
+                "surface_variant": Hct.from_hct(base_hue, 18.0, 88).to_int(),
+                "on_surface_variant": Hct.from_hct(base_hue, 25.0, 16).to_int(),
+                "outline": Hct.from_hct(base_hue, 25.0, 40).to_int(),
+                "outline_variant": Hct.from_hct(base_hue, 15.0, 75).to_int(),
                 "shadow": p_neutral.tone(0),
                 "scrim": p_neutral.tone(0),
-                "surface_tint": p_primary.tone(40),
-                "notif": p_neutral.tone(98),
+                "surface_tint": prim_light,
+                "notif": Hct.from_hct(base_hue, 8.0, 96).to_int(),
             }
 
         # --- Write Hyprland Colors ---
@@ -425,8 +423,10 @@ def generate_palette(image_path, is_dark=True):
 
         generate_rofi_theme(image_path, is_dark=is_dark)
         generate_gtk_theme(palette, is_dark=is_dark)
+        generate_qt_theme(palette, is_dark=is_dark)
+        update_settings_file(is_dark=is_dark)
         
-        # Reload live components
+        # reload live components
         subprocess.run(["hyprctl", "reload"], check=False)
         subprocess.run(["killall", "-SIGUSR1", "kitty"], check=False)
         subprocess.run(["quickshell", "ipc", "call", "wallpaper", "reload"], check=False)
@@ -438,30 +438,105 @@ def generate_palette(image_path, is_dark=True):
         import traceback
         traceback.print_exc()
 
+def rgb_tuple_from_argb(argb):
+    if isinstance(argb, (list, tuple)):
+        return int(argb[0]), int(argb[1]), int(argb[2])
+    return (argb >> 16) & 0xFF, (argb >> 8) & 0xFF, argb & 0xFF
+
+def generate_qt_theme(palette, is_dark=True):
+    kde_globals = os.path.expanduser("~/.config/kdeglobals")
+    os.makedirs(os.path.dirname(kde_globals), exist_ok=True)
+    
+    color_scheme = "BreezeDark" if is_dark else "BreezeLight"
+    icon_theme = "breeze-dark" if is_dark else "breeze"
+    
+    w_bg = rgb_tuple_from_argb(palette["surface"])
+    w_fg = rgb_tuple_from_argb(palette["on_surface"])
+    v_bg = rgb_tuple_from_argb(palette["surface_container_lowest"])
+    v_fg = rgb_tuple_from_argb(palette["on_surface"])
+    b_bg = rgb_tuple_from_argb(palette["surface_container"])
+    b_fg = rgb_tuple_from_argb(palette["on_surface"])
+    s_bg = rgb_tuple_from_argb(palette["primary"])
+    s_fg = rgb_tuple_from_argb(palette["on_primary"])
+    
+    content = f"""[General]
+ColorScheme={color_scheme}
+
+[Icons]
+Theme={icon_theme}
+
+[Colors:Window]
+BackgroundNormal={w_bg[0]},{w_bg[1]},{w_bg[2]}
+ForegroundNormal={w_fg[0]},{w_fg[1]},{w_fg[2]}
+
+[Colors:View]
+BackgroundNormal={v_bg[0]},{v_bg[1]},{v_bg[2]}
+ForegroundNormal={v_fg[0]},{v_fg[1]},{v_fg[2]}
+
+[Colors:Button]
+BackgroundNormal={b_bg[0]},{b_bg[1]},{b_bg[2]}
+ForegroundNormal={b_fg[0]},{b_fg[1]},{b_fg[2]}
+
+[Colors:Selection]
+BackgroundNormal={s_bg[0]},{s_bg[1]},{s_bg[2]}
+ForegroundNormal={s_fg[0]},{s_fg[1]},{s_fg[2]}
+"""
+    with open(kde_globals, "w") as f:
+        f.write(content)
+
+def update_settings_file(is_dark=True):
+    settings_file = os.path.expanduser("~/.config/quickshell/settings.json")
+    try:
+        data = {}
+        if os.path.exists(settings_file):
+            with open(settings_file, "r") as f:
+                data = json.load(f)
+        data["is_dark"] = is_dark
+        with open(settings_file, "w") as f:
+            json.dump(data, f, indent=4)
+    except Exception:
+        pass
+
 def generate_gtk_theme(palette, is_dark=True):
-    GTK3_DIR = os.path.expanduser("~/.config/gtk-3.0")
-    GTK4_DIR = os.path.expanduser("~/.config/gtk-4.0")
-    os.makedirs(GTK3_DIR, exist_ok=True)
-    os.makedirs(GTK4_DIR, exist_ok=True)
+    gtk3_dir = os.path.expanduser("~/.config/gtk-3.0")
+    gtk4_dir = os.path.expanduser("~/.config/gtk-4.0")
+    os.makedirs(gtk3_dir, exist_ok=True)
+    os.makedirs(gtk4_dir, exist_ok=True)
+
+    color_scheme = "prefer-dark" if is_dark else "prefer-light"
+    gtk_theme = "Adwaita-dark" if is_dark else "Adwaita"
+    icon_theme = "breeze-dark" if is_dark else "breeze"
 
     try:
-        color_scheme = "prefer-dark" if is_dark else "prefer-light"
         subprocess.run(["gsettings", "set", "org.gnome.desktop.interface", "color-scheme", color_scheme], check=False)
-        subprocess.run(["gsettings", "set", "org.gnome.desktop.interface", "gtk-theme", "Adwaita"], check=False)
+        subprocess.run(["gsettings", "set", "org.gnome.desktop.interface", "gtk-theme", gtk_theme], check=False)
+        subprocess.run(["gsettings", "set", "org.gnome.desktop.interface", "icon-theme", icon_theme], check=False)
+    except Exception:
+        pass
+
+    try:
+        subprocess.run(["dconf", "write", "/org/gnome/desktop/interface/color-scheme", f"'{color_scheme}'"], check=False)
+        subprocess.run(["dconf", "write", "/org/gnome/desktop/interface/gtk-theme", f"'{gtk_theme}'"], check=False)
+        subprocess.run(["dconf", "write", "/org/gnome/desktop/interface/icon-theme", f"'{icon_theme}'"], check=False)
+    except Exception:
+        pass
+
+    try:
+        subprocess.run(["hyprctl", "setenv", "COLOR_SCHEME", color_scheme], check=False)
+        subprocess.run(["hyprctl", "setenv", "GTK_THEME", gtk_theme], check=False)
     except Exception:
         pass
 
     prefer_dark_val = "1" if is_dark else "0"
-    icon_theme = "breeze-dark" if is_dark else "breeze"
     ini_content = f"""[Settings]
-gtk-theme-name=Adwaita
+gtk-theme-name={gtk_theme}
 gtk-application-prefer-dark-theme={prefer_dark_val}
 gtk-icon-theme-name={icon_theme}
 gtk-font-name=Cantarell 11
 gtk-cursor-theme-name=Adwaita
 gtk-cursor-theme-size=24
 """
-    for d in [GTK3_DIR, GTK4_DIR]:
+    for d in [gtk3_dir, gtk4_dir]:
         with open(os.path.join(d, "settings.ini"), "w") as f:
             f.write(ini_content)
 
@@ -495,12 +570,12 @@ gtk-cursor-theme-size=24
 @define-color view_fg_color {fg_hex};
 @define-color card_bg_color {card_hex};
 @define-color card_fg_color {fg_hex};
-@define-color sidebar_bg_color {base_hex};
+@define-color sidebar_bg_color {card_hex};
 @define-color sidebar_fg_color {fg_hex};
 @define-color window_bg_color {bg_hex};
 @define-color window_fg_color {fg_hex};
 
-window, .background {{
+window, .background, window.thunar, .thunar {{
     background-color: @theme_bg_color;
     color: @theme_fg_color;
 }}
@@ -510,18 +585,54 @@ view, textview, treeview, iconview, .view {{
     color: @theme_text_color;
 }}
 
-headerbar, .titlebar {{
+headerbar, .titlebar, headerbar.titlebar, toolbar, .toolbar, menubar, .menubar {{
     background-color: @headerbar_bg_color;
     color: @headerbar_fg_color;
     border-color: @headerbar_border_color;
 }}
 
-.sidebar, .source-list, placessidebar {{
+menubar > menuitem, .menubar > menuitem {{
+    color: @headerbar_fg_color;
+}}
+
+.sidebar, .source-list, placessidebar, placessidebar list, placessidebar .view, .thunar .standard-view .view {{
     background-color: @sidebar_bg_color;
     color: @sidebar_fg_color;
 }}
+
+.path-bar-box, .location-bar, .path-bar, pathbar {{
+    background-color: @headerbar_bg_color;
+    color: @headerbar_fg_color;
+}}
+
+pathbar button, .path-bar button {{
+    background-color: @card_bg_color;
+    color: @theme_fg_color;
+    border-color: @borders;
+}}
+
+entry, .entry {{
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+    border-color: @borders;
+}}
+
+button, .button {{
+    background-color: @card_bg_color;
+    color: @theme_fg_color;
+    border-color: @borders;
+}}
+
+button:hover, .button:hover {{
+    background-color: @theme_view_hover_decoration_color;
+}}
+
+notebook, notebook tab, notebook > header {{
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+}}
 """
-    for d in [GTK3_DIR, GTK4_DIR]:
+    for d in [gtk3_dir, gtk4_dir]:
         with open(os.path.join(d, "gtk.css"), "w") as f:
             f.write(gtk_css)
 
