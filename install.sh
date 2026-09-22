@@ -13,7 +13,30 @@ RED='\033[0;31m'
 BOLD_RED='\033[1;31m'
 NC='\033[0m'
 
-echo "hyprland and quickshell desktop environment installer"
+echo "======================================================"
+echo " hyprland and quickshell desktop environment installer"
+echo "======================================================"
+echo ""
+echo "this script will install and configure:"
+echo " - window manager: hyprland, hyprpaper, hyprlock, hypridle"
+echo " - ui widgets: quickshell (top bar, control center, wallpaper clock)"
+echo " - terminal and launcher: kitty, rofi-wayland, cliphist"
+echo " - audio and brightness: pipewire, wireplumber, playerctl, brightnessctl"
+echo " - network and vpn: networkmanager, openvpn, cloudflare warp"
+echo " - file manager and tools: thunar, grim, slurp, libnotify"
+echo " - dynamic theming: python materialyoucolor extraction"
+echo " - configs: deployed to ~/.config (hypr, quickshell, kitty, rofi, etc)"
+echo ""
+read -rp "do you want to continue with the installation? [y/N]: " start_confirm
+case "$start_confirm" in
+    [yY]|[yY][eE][sS])
+        echo "proceeding with installation..."
+        ;;
+    *)
+        echo "installation aborted by user"
+        exit 0
+        ;;
+esac
 
 # detect aur helper
 AUR_HELPER=""
@@ -25,6 +48,7 @@ fi
 
 # prompt to install aur helper if missing
 if [ -z "$AUR_HELPER" ]; then
+    echo ""
     echo "no aur helper detected"
     echo "select an aur helper to install:"
     echo "1) yay"

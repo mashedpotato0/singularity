@@ -183,17 +183,18 @@ chmod +x install.sh
 *(Or via HTTPS: `git clone https://github.com/mashedpotato0/singularity.git ~/singularity`)*
 
 The installer will:
-1. Check for `yay` or `paru` and prompt to install one if neither is found.
-2. Install all official dependencies via `pacman` (Hyprland, Kitty, Rofi, OpenVPN, Dialog, etc.).
-3. Install `quickshell-git` and `cloudflare-warp-bin` via the AUR helper.
-4. Install required Python libraries (`materialyoucolor`, `pillow`).
-5. **Configuration Backup & Deployment Prompt**:
+1. Display a summary of all components and prompt for confirmation before proceeding.
+2. Check for `yay` or `paru` and prompt to install one if neither is found.
+3. Install all official dependencies via `pacman` (Hyprland, Kitty, Rofi, OpenVPN, Dialog, etc.).
+4. Install `quickshell-git` and `cloudflare-warp-bin` via the AUR helper.
+5. Install required Python libraries (`materialyoucolor`, `pillow`).
+6. **Configuration Backup & Deployment Prompt**:
    - **Option 1**: Full backup of `~/.config` to `~/.config.backup.<timestamp>`.
    - **Option 2**: Backup only affected directories to `~/.config-backup-<timestamp>`.
    - **Option 3 (Warning)**: Completely replace configs without backup (deletes old configurations).
    - **Option 4**: Cancel installation.
-6. Deploy configuration directories to `~/.config/`.
-7. Deploy default wallpapers to `~/wallpapers/` and initialize the dynamic theme.
+7. Deploy configuration directories to `~/.config/`.
+8. Deploy default wallpapers to `~/wallpapers/` and initialize the dynamic theme.
 
 ---
 
