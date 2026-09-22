@@ -8,7 +8,12 @@ WALLPAPER_SRC="$SRC_DIR/wallpapers"
 TARGET_DIR="$HOME/.config"
 TARGET_WALLPAPER_DIR="$HOME/wallpapers"
 
-echo "=== Hyprland & Quickshell Desktop Environment Installer ==="
+# ansi color definitions
+RED='\033[0;31m'
+BOLD_RED='\033[1;31m'
+NC='\033[0m'
+
+echo "hyprland and quickshell desktop environment installer"
 
 # detect aur helper
 AUR_HELPER=""
@@ -86,27 +91,74 @@ PACMAN_PKGS=(
 
 AUR_PKGS=(
     quickshell-git
+    cloudflare-warp-bin
 )
 
 # install pacman packages
 if command -v pacman >/dev/null 2>&1; then
     echo "installing official repository packages..."
-    sudo pacman -S --needed --noconfirm "${PACMAN_PKGS[@]}" || echo "warning: some pacman packages could not be installed"
+    sudo pacman -S --needed --noconfirm "${PACMAN_PKGS[@]}" || echo "warning some pacman packages could not be installed"
 fi
 
 # install aur packages
 if [ -n "$AUR_HELPER" ]; then
     echo "installing aur packages with $AUR_HELPER..."
-    $AUR_HELPER -S --needed --noconfirm "${AUR_PKGS[@]}" || echo "warning: could not install aur packages"
+    $AUR_HELPER -S --needed --noconfirm "${AUR_PKGS[@]}" || echo "warning could not install aur packages"
 else
-    echo "note: no aur helper found please ensure quickshell is installed"
+    echo "note no aur helper found please ensure quickshell and warp are installed"
 fi
 
 # install python packages for color extraction
 echo "installing python color extraction dependencies..."
 pip install --break-system-packages materialyoucolor pillow || pip install --user materialyoucolor pillow || true
 
-# copy configuration files
+# backup configuration prompt
+echo ""
+echo "configuration deployment and backup options:"
+echo "1) full backup of ~/.config"
+echo "2) backup only affected folders (hypr, quickshell, kitty, rofi, etc)"
+printf "${BOLD_RED}3) WARNING: completely replace configs without backup (deletes old configs)${NC}\n"
+echo "4) cancel installation"
+read -rp "enter choice [1-4]: " backup_choice
+
+TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
+
+case "$backup_choice" in
+    1)
+        BACKUP_PATH="$HOME/.config.backup.$TIMESTAMP"
+        echo "creating full backup of $TARGET_DIR to $BACKUP_PATH..."
+        cp -a "$TARGET_DIR" "$BACKUP_PATH"
+        echo "full backup saved to $BACKUP_PATH"
+        ;;
+    2)
+        BACKUP_PATH="$HOME/.config-backup-$TIMESTAMP"
+        echo "creating backup of affected folders to $BACKUP_PATH..."
+        mkdir -p "$BACKUP_PATH"
+        for item in "$CONFIG_SRC"/*; do
+            if [ -e "$item" ]; then
+                name="$(basename "$item")"
+                if [ -e "$TARGET_DIR/$name" ]; then
+                    echo " -> backing up $name"
+                    cp -a "$TARGET_DIR/$name" "$BACKUP_PATH/"
+                fi
+            fi
+        done
+        echo "affected folders backed up to $BACKUP_PATH"
+        ;;
+    3)
+        printf "${RED}proceeding without backup old configs will be deleted${NC}\n"
+        ;;
+    4|*)
+        if [ "$backup_choice" != "4" ]; then
+            echo "invalid choice cancelling installation"
+        else
+            echo "installation cancelled by user"
+        fi
+        exit 0
+        ;;
+esac
+
+# deploy configuration files
 echo "deploying configuration files to $TARGET_DIR..."
 mkdir -p "$TARGET_DIR"
 
@@ -137,4 +189,4 @@ if [ -f "$TARGET_DIR/hypr/scripts/wall.sh" ]; then
     bash "$TARGET_DIR/hypr/scripts/wall.sh" --startup 2>/dev/null || true
 fi
 
-echo "=== installation completed successfully ==="
+echo "installation completed successfully"

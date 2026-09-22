@@ -1,32 +1,37 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
-echo "============================================="
-echo "   Installing Cloudflare WARP (Bypasses Blocks)"
-echo "============================================="
 
-PKG="/home/mash/.cache/yay/warp-cli/warp-cli-2025.8.779.0-1-x86_64.pkg.tar.zst"
+# install cloudflare warp
 
-if [ -f "$PKG" ]; then
-    echo "Installing cached warp-cli package with pacman..."
-    sudo pacman -U --noconfirm "$PKG"
-elif command -v yay >/dev/null 2>&1; then
-    echo "Installing via yay..."
-    yay -S --noconfirm cloudflare-warp-bin
+AUR_HELPER=""
+if command -v yay >/dev/null 2>&1; then
+    AUR_HELPER="yay"
+elif command -v paru >/dev/null 2>&1; then
+    AUR_HELPER="paru"
 fi
 
-echo "Starting warp-svc daemon..."
+if ! command -v warp-cli >/dev/null 2>&1; then
+    if [ -n "$AUR_HELPER" ]; then
+        echo "installing cloudflare warp via $AUR_HELPER..."
+        $AUR_HELPER -S --needed --noconfirm cloudflare-warp-bin
+    else
+        echo "no aur helper found to install cloudflare-warp-bin"
+        exit 1
+    fi
+fi
+
+# enable service
 sudo systemctl enable --now warp-svc.service
 
-echo "Initializing registration..."
+# initialize registration
 warp-cli registration new 2>/dev/null || true
 warp-cli mode warp 2>/dev/null || true
 
-echo "Connecting to Cloudflare WARP..."
+# connect
 warp-cli connect
 sleep 2
 
 warp-cli status
-echo ""
-echo "✓ WARP is connected! Check your IP at https://ifconfig.me"
-echo "Press Enter to close."
+echo "warp setup complete"
+echo "press enter to close"
 read -r

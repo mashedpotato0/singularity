@@ -142,10 +142,7 @@ Rectangle {
 
         SystemTrayApplet {}
 
-        // Bluetooth
-        BluetoothApplet {}
-
-        // VPN
+        // vpn
         VpnApplet {}
 
         // Wi-Fi

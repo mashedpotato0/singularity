@@ -107,12 +107,12 @@ A dynamic, OLED-black themed desktop environment powered by Hyprland and Quicksh
 - **Workspaces**: Real-time workspace indicators with active pill animations.
 - **Active Window**: Displays current window title and icon.
 - **Media Pill**: Music controls with track info, play/pause toggle, and hover popup.
-- **Applets**: Bluetooth, OpenVPN, Wi-Fi, Volume, Brightness, Battery percentage, and Notification bell.
+- **Applets**: OpenVPN, Wi-Fi, Volume, Brightness, Battery percentage, and Notification bell.
 - **Clock**: Digital time with calendar popup on click.
 
 ### 2. Control Center
 - Open by clicking the battery, network, or notification bell applet.
-- **Quick Toggles**: Wi-Fi, Sound, DND, Dark/Light mode, Screenshot, Bluetooth, Sleep, Lock.
+- **Quick Toggles**: Wi-Fi, Sound, DND, Dark/Light mode, Screenshot, Cloudflare WARP, Sleep, Lock.
 - **Sleep & Idle Management**:
   - Left-click **Sleep** tile: cycles idle sleep timeout (`Off`, `5m`, `10m`, `15m`, `30m`, `45m`, `60m`).
   - Right-click **Sleep** tile: opens expandable chip selector.
@@ -140,14 +140,22 @@ A dynamic, OLED-black themed desktop environment powered by Hyprland and Quicksh
 
 ---
 
-## VPN Setup Guide
+## VPN & Proxy Setup Guide
 
-The desktop environment includes a built-in OpenVPN manager and top-bar indicator:
+### 1. Cloudflare WARP (Quick Toggle)
+The desktop includes an integrated Cloudflare WARP toggle in the Control Center:
+- **Toggle**: Click the **WARP** tile in the Control Center to connect/disconnect.
+- **Initial Setup**: If `warp-cli` is not installed or configured, clicking the tile launches the setup assistant script (`~/.config/hypr/scripts/install_warp.sh`).
+- **Service**: Ensure the daemon is running:
+  ```bash
+  sudo systemctl enable --now warp-svc.service
+  warp-cli registration new
+  warp-cli mode warp
+  ```
 
-1. **Obtain VPN Configurations**:
-   Download your `.ovpn` configuration files from your VPN provider (e.g. ProtonVPN, Mullvad, etc.).
-
-2. **Save Config Files**:
+### 2. OpenVPN Manager (Top Bar)
+The top bar includes a dedicated OpenVPN interactive manager and live status indicator:
+1. **Save Config Files**:
    Create the directory and copy your `.ovpn` files:
    ```bash
    mkdir -p ~/Downloads/vpn
@@ -156,7 +164,7 @@ The desktop environment includes a built-in OpenVPN manager and top-bar indicato
    ```
    Place all your `.ovpn` files inside `~/Downloads/vpn/` (or `~/vpn/`).
 
-3. **Connecting & Disconnecting**:
+2. **Connecting & Disconnecting**:
    - **Connect / Switch Server**: Click the **VPN** applet in the top bar. A terminal window with an interactive menu will appear allowing you to select and connect to any server.
    - **Disconnect**: **Right-click** the **VPN** applet in the top bar to disconnect immediately.
 
@@ -177,10 +185,15 @@ chmod +x install.sh
 The installer will:
 1. Check for `yay` or `paru` and prompt to install one if neither is found.
 2. Install all official dependencies via `pacman` (Hyprland, Kitty, Rofi, OpenVPN, Dialog, etc.).
-3. Install `quickshell-git` via the AUR helper.
+3. Install `quickshell-git` and `cloudflare-warp-bin` via the AUR helper.
 4. Install required Python libraries (`materialyoucolor`, `pillow`).
-5. Deploy all configuration directories to `~/.config/`.
-6. Deploy the default wallpaper to `~/wallpapers/` and initialize the dynamic theme.
+5. **Configuration Backup & Deployment Prompt**:
+   - **Option 1**: Full backup of `~/.config` to `~/.config.backup.<timestamp>`.
+   - **Option 2**: Backup only affected directories to `~/.config-backup-<timestamp>`.
+   - **Option 3 (Warning)**: Completely replace configs without backup (deletes old configurations).
+   - **Option 4**: Cancel installation.
+6. Deploy configuration directories to `~/.config/`.
+7. Deploy default wallpapers to `~/wallpapers/` and initialize the dynamic theme.
 
 ---
 
@@ -190,6 +203,7 @@ The installer will:
    ```bash
    sudo systemctl enable --now NetworkManager
    sudo systemctl enable --now bluetooth
+   sudo systemctl enable --now warp-svc.service
    systemctl --user enable --now pipewire wireplumber
    ```
 

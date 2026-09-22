@@ -8,3 +8,4 @@ singleton BluetoothService 1.0 BluetoothService.qml
 singleton PanelManager 1.0 PanelManager.qml
 singleton WallpaperService 1.0 WallpaperService.qml
 singleton SettingsService 1.0 SettingsService.qml
+singleton WarpService 1.0 WarpService.qml

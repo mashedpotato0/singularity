@@ -116,10 +116,10 @@ GlassCard {
             IconButton {
                 width: (parent.width - 18) / 4
                 height: 48
-                iconName: "bluetooth"
-                text: BluetoothService.enabled ? "BT On" : "BT Off"
-                active: BluetoothService.enabled
-                onClicked: BluetoothService.togglePower()
+                iconName: "cloud"
+                text: WarpService.isConnected ? "WARP On" : "WARP Off"
+                active: WarpService.isConnected
+                onClicked: WarpService.toggle()
             }
 
             IconButton {
