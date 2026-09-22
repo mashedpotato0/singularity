@@ -1,0 +1,7 @@
+{
+    "dnd": true,
+    "is_dark": true,
+    "sleep_timer_default": 0,
+    "bar_position": "top",
+    "clock_format_24h": true
+}

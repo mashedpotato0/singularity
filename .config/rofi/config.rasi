@@ -1,0 +1,9 @@
+configuration {
+    modi: "drun,run,window";
+    icon-theme: "breeze-dark";
+    show-icons: true;
+    terminal: "kitty";
+    drun-display-format: "{icon} {name}";
+}
+
+@theme "~/.config/rofi/style-7.rasi"

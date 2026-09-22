@@ -1,0 +1,45 @@
+/* Generated GTK Material Theme */
+@define-color theme_bg_color #0f090c;
+@define-color theme_fg_color #ffe4ed;
+@define-color theme_base_color #060304;
+@define-color theme_text_color #ffe4ed;
+@define-color theme_selected_bg_color #f6bcd3;
+@define-color theme_selected_fg_color #3e1a2b;
+@define-color theme_view_hover_decoration_color #1e181a;
+@define-color theme_view_active_decoration_color #251e20;
+@define-color borders #643a4d;
+@define-color unfocused_borders #643a4d;
+@define-color headerbar_bg_color #0f090c;
+@define-color headerbar_fg_color #ffe4ed;
+@define-color headerbar_border_color #643a4d;
+@define-color popover_bg_color #181214;
+@define-color popover_fg_color #ffe4ed;
+@define-color view_bg_color #060304;
+@define-color view_fg_color #ffe4ed;
+@define-color card_bg_color #181214;
+@define-color card_fg_color #ffe4ed;
+@define-color sidebar_bg_color #060304;
+@define-color sidebar_fg_color #ffe4ed;
+@define-color window_bg_color #0f090c;
+@define-color window_fg_color #ffe4ed;
+
+window, .background {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+}
+
+view, textview, treeview, iconview, .view {
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+}
+
+headerbar, .titlebar {
+    background-color: @headerbar_bg_color;
+    color: @headerbar_fg_color;
+    border-color: @headerbar_border_color;
+}
+
+.sidebar, .source-list, placessidebar {
+    background-color: @sidebar_bg_color;
+    color: @sidebar_fg_color;
+}
