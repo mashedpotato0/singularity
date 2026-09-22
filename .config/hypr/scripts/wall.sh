@@ -11,7 +11,10 @@ if [ "$1" == "--startup" ]; then
     fi
 
     if [ -z "$LAST_WALL" ] || [ ! -f "$LAST_WALL" ]; then
-        LAST_WALL="$WALLPAPER_DIR/wallpaperflare.com_wallpaper (2).jpg"
+        LAST_WALL="$HOME/wallpapers/desktop/wallpaper (78).jpg"
+        if [ ! -f "$LAST_WALL" ]; then
+            LAST_WALL="$HOME/wallpapers/wallpaper (78).jpg"
+        fi
     fi
 
     if [ -f "$LAST_WALL" ]; then

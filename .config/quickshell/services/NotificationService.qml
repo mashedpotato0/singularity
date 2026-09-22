@@ -11,6 +11,13 @@ Item {
     property var toastList: []
     readonly property int unreadCount: notificationList.length
 
+    Connections {
+        target: SettingsService
+        function onDndChanged() {
+            root.dndEnabled = SettingsService.dnd;
+        }
+    }
+
     signal newToast(var notif)
 
     NotificationServer {

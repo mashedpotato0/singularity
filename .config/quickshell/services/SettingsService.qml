@@ -3,6 +3,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
+// settings persistence service
 Item {
     id: root
 
@@ -65,11 +66,11 @@ Item {
     function saveSettings() {
         try {
             let jsonStr = JSON.stringify(root.values, null, 4);
+            let b64 = Qt.btoa(jsonStr);
             Quickshell.execDetached([
-                "python3",
+                "bash",
                 "-c",
-                "import sys, os; p = os.path.expanduser('~/.config/quickshell/settings.json'); open(p, 'w').write(sys.argv[1])",
-                jsonStr
+                "echo '" + b64 + "' | base64 -d > " + root.settingsPath
             ]);
         } catch (e) {
             console.log("failed to save settings", e);

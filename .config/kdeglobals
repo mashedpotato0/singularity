@@ -5,17 +5,17 @@ ColorScheme=BreezeDark
 Theme=breeze-dark
 
 [Colors:Window]
-BackgroundNormal=20,8,8
-ForegroundNormal=255,248,247
+BackgroundNormal=7,13,5
+ForegroundNormal=248,250,240
 
 [Colors:View]
-BackgroundNormal=10,2,2
-ForegroundNormal=255,248,247
+BackgroundNormal=2,5,1
+ForegroundNormal=248,250,240
 
 [Colors:Button]
-BackgroundNormal=32,18,18
-ForegroundNormal=255,248,247
+BackgroundNormal=17,23,13
+ForegroundNormal=248,250,240
 
 [Colors:Selection]
-BackgroundNormal=255,170,173
-ForegroundNormal=61,4,13
+BackgroundNormal=114,216,72
+ForegroundNormal=6,33,0

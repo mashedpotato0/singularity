@@ -202,9 +202,21 @@ Item {
         sysProc.exec(["systemctl", "poweroff"]);
     }
 
-    // Idle Sleep Timeout
+    // idle sleep timeout
     property int sleepTimerMinutes: SettingsService.sleepTimerDefault
     property bool sleepTimerActive: sleepTimerMinutes > 0
+
+    Connections {
+        target: SettingsService
+        function onSleepTimerDefaultChanged() {
+            root.sleepTimerMinutes = SettingsService.sleepTimerDefault;
+            Quickshell.execDetached([
+                "bash",
+                Quickshell.env("HOME") + "/.config/hypr/scripts/update_idle.sh",
+                SettingsService.sleepTimerDefault.toString()
+            ]);
+        }
+    }
 
     readonly property string sleepTimerLabel: {
         if (!sleepTimerActive) return "Off";
@@ -279,5 +291,12 @@ Item {
 
     Component.onCompleted: {
         updateAll();
+        if (SettingsService.sleepTimerDefault >= 0) {
+            Quickshell.execDetached([
+                "bash",
+                Quickshell.env("HOME") + "/.config/hypr/scripts/update_idle.sh",
+                SettingsService.sleepTimerDefault.toString()
+            ]);
+        }
     }
 }

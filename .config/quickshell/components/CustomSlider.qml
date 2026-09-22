@@ -1,6 +1,7 @@
 import QtQuick
 import "../theme"
 
+// custom slider with persistent binding support
 Item {
     id: root
 
@@ -10,6 +11,9 @@ Item {
     property int trackHeight: 6
     property bool interactive: true
     readonly property bool pressed: mouseArea.pressed
+
+    property real dragValue: 0.0
+    readonly property real displayValue: mouseArea.pressed ? dragValue : Math.max(0.0, Math.min(1.0, root.value))
 
     signal moved(real val)
 
@@ -30,21 +34,21 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            width: Math.max(0, Math.min(track.width, track.width * root.value))
+            width: Math.max(0, Math.min(track.width, track.width * root.displayValue))
             radius: height / 2
             color: root.progressColor
 
             Behavior on width {
-                enabled: !mouseArea.drag.active && !mouseArea.pressed
-                NumberAnimation { duration: 120; easing.type: Easing.OutQuad }
+                enabled: !mouseArea.pressed
+                NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
             }
         }
 
-        // Thumb handle
+        // thumb handle
         Rectangle {
             id: thumb
             anchors.verticalCenter: parent.verticalCenter
-            x: Math.max(0, Math.min(track.width - width, (track.width * root.value) - (width / 2)))
+            x: Math.max(0, Math.min(track.width - width, (track.width * root.displayValue) - (width / 2)))
             width: 14
             height: 14
             radius: 7
@@ -67,7 +71,7 @@ Item {
 
         function updateFromMouse(mouseX) {
             let newVal = Math.max(0.0, Math.min(1.0, mouseX / track.width));
-            root.value = newVal;
+            root.dragValue = newVal;
             root.moved(newVal);
         }
 
