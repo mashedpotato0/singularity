@@ -206,15 +206,26 @@ Item {
     property int sleepTimerMinutes: SettingsService.sleepTimerDefault
     property bool sleepTimerActive: sleepTimerMinutes > 0
 
-    Connections {
-        target: SettingsService
-        function onSleepTimerDefaultChanged() {
-            root.sleepTimerMinutes = SettingsService.sleepTimerDefault;
+    Timer {
+        id: idleUpdateTimer
+        interval: 200
+        repeat: false
+        onTriggered: {
             Quickshell.execDetached([
                 "bash",
                 Quickshell.env("HOME") + "/.config/hypr/scripts/update_idle.sh",
-                SettingsService.sleepTimerDefault.toString()
+                root.sleepTimerMinutes.toString()
             ]);
+        }
+    }
+
+    Connections {
+        target: SettingsService
+        function onSleepTimerDefaultChanged() {
+            if (root.sleepTimerMinutes !== SettingsService.sleepTimerDefault) {
+                root.sleepTimerMinutes = SettingsService.sleepTimerDefault;
+                idleUpdateTimer.restart();
+            }
         }
     }
 
@@ -226,11 +237,7 @@ Item {
     function setSleepTimer(minutes) {
         root.sleepTimerMinutes = minutes;
         SettingsService.set("sleep_timer_default", minutes);
-        Quickshell.execDetached([
-            "bash",
-            Quickshell.env("HOME") + "/.config/hypr/scripts/update_idle.sh",
-            minutes.toString()
-        ]);
+        idleUpdateTimer.restart();
     }
 
     function cycleSleepTimer() {

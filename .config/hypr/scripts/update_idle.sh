@@ -58,7 +58,8 @@ EOF
 fi
 
 # restart hypridle to apply changes live
-killall -q hypridle || true
+pkill -x -9 hypridle 2>/dev/null || true
 if command -v hypridle >/dev/null 2>&1; then
+    sleep 0.1
     hypridle >/dev/null 2>&1 &
 fi

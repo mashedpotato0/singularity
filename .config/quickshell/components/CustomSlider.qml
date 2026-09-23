@@ -40,7 +40,7 @@ Item {
 
             Behavior on width {
                 enabled: !mouseArea.pressed
-                NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
+                NumberAnimation { duration: 80; easing.type: Easing.OutQuad }
             }
         }
 
@@ -81,5 +81,6 @@ Item {
                 updateFromMouse(mouse.x);
             }
         }
+        onReleased: mouse => updateFromMouse(mouse.x)
     }
 }
