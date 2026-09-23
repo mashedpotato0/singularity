@@ -28,30 +28,27 @@ Item {
         root.volume = clamped;
         let pct = Math.round(clamped * 100);
         Quickshell.execDetached(["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", pct + "%"]);
-        refreshTimer.restart();
     }
 
-    function setStreamVolume(ids, val, pid) {
+    function setStreamVolume(key, ids, val) {
         let streamIds = Array.isArray(ids) ? ids : [ids];
-        let clamped = Math.max(0.0, Math.min(1.5, val));
-        let valStr = clamped.toFixed(2);
+        let clamped = Math.max(0.0, Math.min(1.0, val));
+        let pct = Math.round(clamped * 100);
 
         for (let i = 0; i < streamIds.length; i++) {
-            Quickshell.execDetached(["wpctl", "set-volume", streamIds[i].toString(), valStr]);
+            Quickshell.execDetached(["wpctl", "set-volume", streamIds[i].toString(), pct + "%"]);
         }
 
-        // update local state immediately
         for (let i = 0; i < root.playbackStreams.length; i++) {
             let item = root.playbackStreams[i];
-            if ((pid && item.pid === pid) || (item.ids && item.ids.some(id => streamIds.indexOf(id) !== -1))) {
+            if (item && item.key === key) {
                 item.volume = clamped;
                 break;
             }
         }
-        refreshTimer.restart();
     }
 
-    function toggleStreamMute(ids, isMuted, pid) {
+    function toggleStreamMute(key, ids, isMuted) {
         let streamIds = Array.isArray(ids) ? ids : [ids];
         let target = isMuted ? "0" : "1";
 
@@ -59,21 +56,20 @@ Item {
             Quickshell.execDetached(["wpctl", "set-mute", streamIds[i].toString(), target]);
         }
 
+        let updated = [];
         for (let i = 0; i < root.playbackStreams.length; i++) {
-            let item = root.playbackStreams[i];
-            if ((pid && item.pid === pid) || (item.ids && item.ids.some(id => streamIds.indexOf(id) !== -1))) {
+            let item = Object.assign({}, root.playbackStreams[i]);
+            if (item.key === key) {
                 item.muted = !isMuted;
-                break;
             }
+            updated.push(item);
         }
-        root.playbackStreamsChanged();
-        refreshTimer.restart();
+        root.playbackStreams = updated;
     }
 
     function toggleMute() {
         root.muted = !root.muted;
         Quickshell.execDetached(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"]);
-        refreshTimer.restart();
     }
 
     function toggleMicMute() {
@@ -104,9 +100,7 @@ Item {
                 let match = out.match(/Volume:\s+([0-9.]+)(?:\s+\[MUTED\])?/);
                 if (match) {
                     let v = parseFloat(match[1]);
-                    if (!isNaN(v)) {
-                        root.volume = v;
-                    }
+                    if (!isNaN(v)) root.volume = v;
                     root.muted = (out.indexOf("MUTED") !== -1);
                 }
             }
@@ -121,9 +115,7 @@ Item {
             id: inspectCollector
             onDataChanged: {
                 let desc = inspectCollector.text.trim();
-                if (desc.length > 0) {
-                    root.sinkName = desc;
-                }
+                if (desc.length > 0) root.sinkName = desc;
             }
         }
     }
@@ -138,19 +130,12 @@ Item {
                 let lines = statusCollector.text.trim().split("\n");
                 let sinks = [];
                 for (let i = 0; i < lines.length; i++) {
-                    let line = lines[i];
-                    let match = line.match(/([* ])\s*(\d+)\.\s+(.*?)\s+\[vol:/);
+                    let match = lines[i].match(/([* ])\s*(\d+)\.\s+(.*?)\s+\[vol:/);
                     if (match) {
-                        sinks.push({
-                            id: parseInt(match[2]),
-                            name: match[3].trim(),
-                            isDefault: match[1] === "*"
-                        });
+                        sinks.push({ id: parseInt(match[2]), name: match[3].trim(), isDefault: match[1] === "*" });
                     }
                 }
-                if (sinks.length > 0) {
-                    root.availableSinks = sinks;
-                }
+                if (sinks.length > 0) root.availableSinks = sinks;
             }
         }
     }
@@ -165,11 +150,8 @@ Item {
                 let out = streamsCollector.text.trim();
                 try {
                     let parsed = JSON.parse(out);
-                    if (Array.isArray(parsed)) {
-                        root.playbackStreams = parsed;
-                    }
-                } catch (e) {
-                }
+                    if (Array.isArray(parsed)) root.playbackStreams = parsed;
+                } catch (e) {}
             }
         }
     }
@@ -189,7 +171,5 @@ Item {
         onTriggered: root.updateAll()
     }
 
-    Component.onCompleted: {
-        root.updateAll();
-    }
+    Component.onCompleted: root.updateAll()
 }

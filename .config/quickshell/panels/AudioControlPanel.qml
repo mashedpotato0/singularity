@@ -227,6 +227,8 @@ GlassCard {
                     border.color: Theme.border
                     border.width: 1
 
+                    property real displayVolume: modelData.volume
+
                     Column {
                         anchors.fill: parent
                         anchors.margins: 6
@@ -265,7 +267,7 @@ GlassCard {
                                 id: streamVolText
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: modelData.muted ? "Muted" : (Math.round(streamSlider.value * 100) + "%")
+                                text: modelData.muted ? "Muted" : (Math.round(streamCard.displayVolume * 100) + "%")
                                 color: modelData.muted ? Theme.accentRed : Theme.accentCyan
                                 font.family: Theme.fontFamily
                                 font.pixelSize: Theme.fontSizeTiny
@@ -275,26 +277,28 @@ GlassCard {
 
                         Row {
                             width: parent.width
-                            height: 18
+                            height: 20
                             spacing: 8
 
                             CustomSlider {
-                                id: streamSlider
                                 width: parent.width - 28
-                                height: 18
-                                trackHeight: 4
+                                height: 20
+                                trackHeight: 6
                                 value: modelData.volume
                                 progressColor: modelData.muted ? Theme.accentRed : Theme.accentCyan
-                                onMoved: val => AudioService.setStreamVolume(modelData.ids, val, modelData.pid)
+                                onMoved: val => {
+                                    streamCard.displayVolume = val;
+                                    AudioService.setStreamVolume(modelData.key, modelData.ids, val);
+                                }
                             }
 
                             IconButton {
                                 anchors.verticalCenter: parent.verticalCenter
                                 iconName: modelData.muted ? "volume-muted" : "volume-high"
-                                iconSize: 11
+                                iconSize: 12
                                 implicitWidth: 20
                                 implicitHeight: 20
-                                onClicked: AudioService.toggleStreamMute(modelData.ids, modelData.muted, modelData.pid)
+                                onClicked: AudioService.toggleStreamMute(modelData.key, modelData.ids, modelData.muted)
                             }
                         }
                     }

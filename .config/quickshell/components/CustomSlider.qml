@@ -12,8 +12,13 @@ Item {
     property bool interactive: true
     readonly property bool pressed: mouseArea.pressed
 
-    property real dragValue: 0.0
-    readonly property real displayValue: mouseArea.pressed ? dragValue : Math.max(0.0, Math.min(1.0, root.value))
+    property real currentValue: value
+
+    onValueChanged: {
+        if (!mouseArea.pressed) {
+            currentValue = value;
+        }
+    }
 
     signal moved(real val)
 
@@ -34,21 +39,16 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            width: Math.max(0, Math.min(track.width, track.width * root.displayValue))
+            width: Math.max(0, Math.min(track.width, track.width * Math.max(0.0, Math.min(1.0, root.currentValue))))
             radius: height / 2
             color: root.progressColor
-
-            Behavior on width {
-                enabled: !mouseArea.pressed
-                NumberAnimation { duration: 80; easing.type: Easing.OutQuad }
-            }
         }
 
         // thumb handle
         Rectangle {
             id: thumb
             anchors.verticalCenter: parent.verticalCenter
-            x: Math.max(0, Math.min(track.width - width, (track.width * root.displayValue) - (width / 2)))
+            x: Math.max(0, Math.min(track.width - width, (track.width * Math.max(0.0, Math.min(1.0, root.currentValue))) - (width / 2)))
             width: 14
             height: 14
             radius: 7
@@ -71,7 +71,7 @@ Item {
 
         function updateFromMouse(mouseX) {
             let newVal = Math.max(0.0, Math.min(1.0, mouseX / track.width));
-            root.dragValue = newVal;
+            root.currentValue = newVal;
             root.moved(newVal);
         }
 
