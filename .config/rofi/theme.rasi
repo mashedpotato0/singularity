@@ -2,8 +2,8 @@
 
 * {
     /* Base Colors */
-    background:                  #090c08F5;
-    foreground:                  #c1ddaeFF;
+    background:                  #080b0eF5;
+    foreground:                  #b7d8f7FF;
 
     /* Normal Items */
     normal-background:           rgba ( 0, 0, 0, 0 % );
@@ -12,12 +12,12 @@
     alternate-normal-foreground: @foreground;
 
     /* Selected Items */
-    selected-normal-background:  #b3cfa1FF;
-    selected-normal-foreground:  #152b0cFF;
+    selected-normal-background:  #a9cae8FF;
+    selected-normal-foreground:  #002840FF;
 
     /* Active Items (Apps currently running) */
     active-background:           rgba ( 0, 0, 0, 0 % );
-    active-foreground:           #bccbb0FF;
+    active-foreground:           #b8c8d9FF;
     alternate-active-background: rgba ( 0, 0, 0, 0 % );
     alternate-active-foreground: @active-foreground;
     selected-active-background:  @selected-normal-background;
@@ -25,15 +25,15 @@
 
     /* Urgent Items */
     urgent-background:           rgba ( 0, 0, 0, 0 % );
-    urgent-foreground:           #ffb4a3FF;
+    urgent-foreground:           #ffb3aeFF;
     alternate-urgent-background: rgba ( 0, 0, 0, 0 % );
     alternate-urgent-foreground: @urgent-foreground;
     selected-urgent-background:  @urgent-foreground;
     selected-urgent-foreground:  @background;
 
     /* Borders and Separators */
-    border-color:                #59724bFF;
-    separatorcolor:              #203616FF;
+    border-color:                #4e6e89FF;
+    separatorcolor:              #0e334bFF;
     spacing:                     2;
     background-color:            rgba ( 0, 0, 0, 0 % );
 }
